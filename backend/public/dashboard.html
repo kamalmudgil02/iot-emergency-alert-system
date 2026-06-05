@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - IoT Emergency Alert System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">🚨 Emergency Alert Dashboard</span>
+            <div>
+                <span class="text-white me-3">Welcome, <span id="username">Admin</span></span>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4" id="currentAlertCard">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Current Alert Status</h5>
+                    </div>
+                    <div class="card-body text-center" id="alertStatus">
+                        <h3 class="text-success">✓ No Active Alerts</h3>
+                        <p class="text-muted">System is operating normally</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Alert History</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="alertHistoryTable">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Type</th>
+                                        <th>Device</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="alertHistoryBody">
+                                    <tr><td colspan="4" class="text-center">Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Device Status</h5>
+                    </div>
+                    <div class="card-body" id="deviceStatusContainer">
+                        <div class="device-status mb-3" id="device-ESP1">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div><strong>ESP1</strong><br><small>Trigger Unit</small></div>
+                                <span class="badge bg-secondary">Offline</span>
+                            </div>
+                        </div>
+                        <div class="device-status" id="device-ESP2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div><strong>ESP2</strong><br><small>Receiver Unit</small></div>
+                                <span class="badge bg-secondary">Offline</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Control Panel</h5>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-warning w-100 mb-2" onclick="acknowledgeAlert()" id="ackBtn" disabled>
+                            Acknowledge Alert
+                        </button>
+                        <button class="btn btn-danger w-100" onclick="resetAlert()" id="resetBtn" disabled>
+                            Reset System
+                        </button>
+                        <hr>
+                        <div class="text-center">
+                            <small class="text-muted">Last updated: <span id="lastUpdate">Never</span></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

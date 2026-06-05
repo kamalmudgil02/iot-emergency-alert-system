@@ -1,0 +1,123 @@
+/*
+ * ============================================================================
+ * Custom Styles - IoT Emergency Alert System
+ * ============================================================================
+ */
+
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* Alert Card Styles */
+#currentAlertCard {
+    transition: all 0.3s ease;
+}
+
+#currentAlertCard.alert-active {
+    border: 3px solid #dc3545;
+    box-shadow: 0 0 20px rgba(220, 53, 69, 0.5);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(220, 53, 69, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(220, 53, 69, 0.8);
+    }
+}
+
+/* Alert Status Display */
+.alert-fire {
+    color: #dc3545;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.alert-medical {
+    color: #0dcaf0;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.alert-security {
+    color: #ffc107;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Device Status */
+.device-status {
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    background: #f8f9fa;
+}
+
+.device-status:hover {
+    background: #e9ecef;
+}
+
+/* Badge Styles */
+.badge {
+    font-size: 0.85rem;
+    padding: 0.5em 0.8em;
+}
+
+/* Table Styles */
+.table-hover tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Card Styles */
+.card {
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 10px;
+    }
+    
+    .alert-fire, .alert-medical, .alert-security {
+        font-size: 1.5rem;
+    }
+}
+
+/* Loading Animation */
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Notification Styles */
+.toast {
+    border-radius: 8px;
+}

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - IoT Emergency Alert System</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 450px;
+            width: 100%;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-header h1 {
+            color: #333;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+        }
+        
+        .form-control {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .alert {
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .credentials-info {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+        
+        .credentials-info strong {
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <!-- Logo -->
+        <div class="logo">
+            🚨
+        </div>
+        
+        <!-- Header -->
+        <div class="login-header">
+            <h1>Emergency Alert System</h1>
+            <p>Real-Time IoT Monitoring Dashboard</p>
+        </div>
+        
+        <!-- Alert Message -->
+        <div id="alertMessage" class="alert alert-danger d-none" role="alert">
+            Invalid username or password
+        </div>
+        
+        <!-- Login Form -->
+        <form id="loginForm">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" 
+                       placeholder="Enter username" required autofocus>
+            </div>
+            
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" 
+                       placeholder="Enter password" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-login">
+                <span id="loginText">Login</span>
+                <span id="loginSpinner" class="spinner-border spinner-border-sm d-none" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </span>
+            </button>
+        </form>
+        
+        <!-- Default Credentials Info -->
+        <div class="credentials-info">
+            <strong>Default Credentials:</strong><br>
+            Username: <code>admin</code><br>
+            Password: <code>admin123</code>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Login Script -->
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const alertMessage = document.getElementById('alertMessage');
+        const loginText = document.getElementById('loginText');
+        const loginSpinner = document.getElementById('loginSpinner');
+        
+        // Handle form submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Get form data
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Hide alert
+            alertMessage.classList.add('d-none');
+            
+            // Show loading spinner
+            loginText.classList.add('d-none');
+            loginSpinner.classList.remove('d-none');
+            
+            try {
+                // Send login request
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Login successful - redirect to dashboard
+                    window.location.href = '/dashboard';
+                } else {
+                    // Login failed - show error
+                    alertMessage.textContent = data.error || 'Invalid username or password';
+                    alertMessage.classList.remove('d-none');
+                    
+                    // Reset button
+                    loginText.classList.remove('d-none');
+                    loginSpinner.classList.add('d-none');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alertMessage.textContent = 'Connection error. Please try again.';
+                alertMessage.classList.remove('d-none');
+                
+                // Reset button
+                loginText.classList.remove('d-none');
+                loginSpinner.classList.add('d-none');
+            }
+        });
+        
+        // Check if already logged in
+        fetch('/api/auth/check')
+            .then(response => response.json())
+            .then(data => {
+                if (data.authenticated) {
+                    window.location.href = '/dashboard';
+                }
+            })
+            .catch(error => console.error('Auth check error:', error));
+    </script>
+</body>
+</html>
